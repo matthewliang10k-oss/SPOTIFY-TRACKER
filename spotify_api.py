@@ -56,11 +56,11 @@ def getPlaylistTracks(playlist_id):
     playlist_info = sp.playlist_items(playlist_id)
     tracks = []
 
-    while True:
-        for item in playlist_info["items"]:
+    for item in playlist_info["items"]:
             if item["item"] is not None:
                 tracks.append(item["item"]["name"])
     return tracks
+
 
 def getPlaylistName(playlist_id):
    playlistsInfo = getAllPlaylistinfo()

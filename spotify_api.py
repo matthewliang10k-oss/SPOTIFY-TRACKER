@@ -28,6 +28,16 @@ def getAllPlaylistinfo():
   
   return playlist_info
 
+def getPlaylistIcon(playlist_id):
+   playlists = getPlaylists()
+   if not playlists:
+      return None
+   for playlist in playlists['items']:
+      if playlist_id == playlist['id']:
+         return playlist['images'][0]['url']
+   return None
+
+print(getPlaylistIcon(getPlaylistID('yah')))
 def getPlaylistIcons():
     playlistInfo = getAllPlaylistinfo()
     playlistIcons = {}

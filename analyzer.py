@@ -33,10 +33,8 @@ def getTotalPlaylistDurationM(playlist_id):
     tracks = getTotalPlaylistDurationS(playlist_id)
     if tracks is None:
         return None
-    return {
-        'minutes': int(tracks//60),
-        'seconds': int(tracks%60)
-           }
+    return f"{int(tracks//60)} minutes and {int(tracks%60)} seconds"
+
 
 
 def getAvgTrackDurationMS(playlist_id):
@@ -59,7 +57,7 @@ def getAvgTrackDurationMin(playlist_id):
          return None
      duration ={'minutes':int(totalSeconds//60),
                 'seconds': int(totalSeconds%60)} 
-     return duration
+     return f"{int(totalSeconds//60)} minutes and {int(totalSeconds%60)} seconds"
 
 
 def getLongestSongDuration(playlist_id):
@@ -206,12 +204,10 @@ def getOldestsong(playlist_id):
             oldest_songs.append(date)    
     
     if len(oldest_songs) > 1:
-     return {'oldest_songs': oldest_songs}
+     return oldest_songs
     else:
-     return {
-         'name': oldest_name,
-         'released': oldest_song
-            } 
+     return oldest_songs
+
 
 def getYoungestsong(playlist_id):
     dates = getReleaseYears(playlist_id)
@@ -230,12 +226,10 @@ def getYoungestsong(playlist_id):
             youngest_songs.append(date)    
     
     if len(youngest_songs) > 1:
-     return {'youngest_songs': youngest_songs}
+     return youngest_songs
     else:
-     return {
-         'name': youngest_name,
-         'released': youngest_song
-            } 
+     return youngest_songs
+
     
 
 def getOnlyReleaseYears(playlist_id):

@@ -37,7 +37,6 @@ def getPlaylistIcon(playlist_id):
          return playlist['images'][0]['url']
    return None
 
-print(getPlaylistIcon(getPlaylistID('yah')))
 def getPlaylistIcons():
     playlistInfo = getAllPlaylistinfo()
     playlistIcons = {}

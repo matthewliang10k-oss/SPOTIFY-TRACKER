@@ -9,19 +9,35 @@ from collections import Counter
 #an empty list behaves like a false statement during an if statement for some reason wtf
 #when using these modules you will need to import spotipy api, then pass in the arguement from the ID, enter the name before hand)
 def getTotalTrackNum(playlist_id):
-    if getPlaylistTracks(playlist_id) is None:
+    tracks = getPlaylistTracks(playlist_id)
+
+    if tracks is None:
         return None
-    return int(len((getPlaylistTracks(playlist_id))))
+
+    count = 0
+
+    for track in tracks:
+        if track is None:
+            continue
+        count += 1
+
+    return count
 
 
 def getTotalPlaylistDurationMS(playlist_id):
+    totalTrackDuration = 0
     tracks = getTrackMetaData(playlist_id)
+
     if tracks is None:
         return None
-    totalTrackDuration = 0
+
     for track in tracks:
-            totalTrackDuration += track['item']['duration_ms']
-    return int(round(totalTrackDuration))
+        if track["item"] is None:
+            continue
+
+        totalTrackDuration += track["item"]["duration_ms"]
+
+    return totalTrackDuration
 
 def getTotalPlaylistDurationS(playlist_id):
     tracks = getTotalPlaylistDurationMS(playlist_id)
@@ -33,22 +49,26 @@ def getTotalPlaylistDurationM(playlist_id):
     tracks = getTotalPlaylistDurationS(playlist_id)
     if tracks is None:
         return None
-    return f"{int(tracks//60)} minutes and {int(tracks%60)} seconds"
+    return f"{(int(tracks//60))} minutes and {int(tracks%60)} seconds"
 
 
 
 def getAvgTrackDurationMS(playlist_id):
-     try:
-      avgTrackDurationMS = (getTotalPlaylistDurationMS(playlist_id)/getTotalTrackNum(playlist_id))
-      return int(round(avgTrackDurationMS))
-     except ZeroDivisionError:
-          return None
+    total = getTotalPlaylistDurationMS(playlist_id)
+    count = getTotalTrackNum(playlist_id)
+
+    if total is None or count is None or count == 0:
+        return None
+
+    return int(round(total / count))
+
+getAvgTrackDurationMS(getPlaylistID("🗣️🗣️🗣️"))
 
 def getAvgTrackDurationSec(playlist_id):
      avg_ms = getAvgTrackDurationMS(playlist_id)
      if avg_ms is None:
          return None
-     return int(round(avg_ms)/1000)
+     return int(round(avg_ms/1000))
 
 
 def getAvgTrackDurationMin(playlist_id):
@@ -66,9 +86,11 @@ def getLongestSongDuration(playlist_id):
          return None
      track_lengths = []
      for track in tracks:
-          track_lengths.append(track['item']['duration_ms'])
-     track_lengths = int(max(track_lengths))
-     return track_lengths
+      if track["item"] is None:
+        continue
+
+      track_lengths.append(track["item"]["duration_ms"])
+      return int(max(track_lengths))
 
 def getShortestSongDuration(playlist_id):
      tracks = getTrackMetaData(playlist_id)
@@ -76,9 +98,11 @@ def getShortestSongDuration(playlist_id):
          return None
      track_lengths = []
      for track in tracks:
+          if track['item'] is None:
+              continue
           track_lengths.append(track['item']['duration_ms'])
      track_lengths = int(min(track_lengths))
-     return track_lengths
+     return int(min(track_lengths))
 
 def getShortestSongName (playlist_id):
      shortest_song = getShortestSongDuration(playlist_id)
@@ -168,6 +192,8 @@ def getExplicitSongPercentage(playlist_id):
         return 0
 
     for track in all_tracks:
+        if track['item'] is None:
+            continue
         if track['item']['explicit']: #dont need the true because it automatically assumes its true i think
             explicit_count +=1
     explicit_ratio = explicit_count/len(all_tracks)
@@ -182,6 +208,8 @@ def getReleaseYears(playlist_id):
      return None
  all_dates = []
  for track in tracks:
+     if track['item'] is None:
+         continue
      all_dates.append({
          'name': track['item']['name'], 'released': int(track['item']['album']['release_date'][:4])
      })
@@ -319,8 +347,10 @@ def getTop5ArtistsAllTime():
 
 def getArtistpercentage(playlist_name):
     artists = getAllArtists(playlist_name)
+    if not artists:
+        return None
     artistcounts = Counter(artists)
-    if not artists or not artistcounts:
+    if not artistcounts:
         return None
     
     artistcount = []
@@ -333,10 +363,11 @@ def getArtistpercentage(playlist_name):
         return None
     artistpercentage = []    
     for artist in artistcount:
-        percentage = ((artist['count'])/len(artists)*100)
+        percentage = ((int(artist['count']))/len(artists)*100)
         artistpercentage.append({'artist': artist['artist'],
-                                  'percentage': f"{percentage}%"})
+                                  'percentage': round(percentage)})
     return artistpercentage
+
 
 
 if __name__ == "__main__":

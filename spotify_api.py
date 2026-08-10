@@ -1,6 +1,15 @@
 from login import sp
 import json
 
+def getUserInfo():
+    user = sp.current_user()
+
+    return {
+        "spotify_user_id": user["id"],
+        "display_name": user["display_name"],
+        "profile_image": user["images"][0]["url"] if user["images"] else None
+    }
+
 def getPlaylists():
  return sp.current_user_playlists(limit=50)
 
@@ -14,19 +23,21 @@ def getPlaylistID(name):
     return None
 
 def getAllPlaylistinfo():
-  playlist_info = []
-  Playlist = getPlaylists()
-  for playlist in Playlist['items']:
-    playlist_info.append({
-      "name": playlist['name'],
-      "description": playlist['description'],
-      "Track Length": playlist['items']['total'],
-      "public": playlist['public'],
-      "id": playlist['id'],
-      "url": playlist["external_urls"]["spotify"],
-      "image_link": playlist['images'][0]['url']})
-  
-  return playlist_info
+    playlist_info = []
+    playlists = getPlaylists()
+
+    user = sp.current_user()
+    user_id = user['id']
+
+    for playlist in playlists['items']:
+        playlist_info.append({
+            "playlist_id": playlist['id'],
+            "user_id": user_id,
+            "name": playlist['name'],
+            "description": playlist['description']
+        })
+
+    return playlist_info
 
 def getPlaylistIcon(playlist_id):
    playlists = getPlaylists()

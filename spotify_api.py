@@ -131,6 +131,39 @@ def getAllArtists(playlist_id):
 
     return all_artists
 
+def getCurrentPlayback():
+    return sp.current_playback()
+
+def getRecentlyPlayed(limit=50, after=None):
+    if after is None:
+        return sp.current_user_recently_played(limit=limit)
+
+    return sp.current_user_recently_played(
+        limit=limit,
+        after=after
+    )
+
+
+def getRecentlyPlayed(limit=50, after=None):
+
+    if after is None:
+        return sp.current_user_recently_played(limit=limit)
+
+    return sp.current_user_recently_played(
+        limit=limit,
+        after=after
+    )
+
+
+def getRecentlyPlayed(limit=50, after=None):
+    if after is None:
+        return sp.current_user_recently_played(limit=limit)
+
+    return sp.current_user_recently_played(
+        limit=limit,
+        after=after
+    )
+
 if __name__ == "__main__":
   pass
 

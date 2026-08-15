@@ -53,7 +53,7 @@ def getPlaylistIcons():
     playlistIcons = {}
 
     for playlist in playlistInfo:
-        playlistIcons[playlist['id']] = {
+        playlistIcons[playlist['playlist_id']] = {
             "name": playlist['name'],
             "image": playlist['image_link']
         }
@@ -83,11 +83,13 @@ def getPlaylistTracks(playlist_id):
 
 
 def getPlaylistName(playlist_id):
-   playlistsInfo = getAllPlaylistinfo()
-   for playlists in playlistsInfo:
-      if playlist_id == playlists['id']:
-         return playlists['name']
-   return None    
+    playlistsInfo = getAllPlaylistinfo()
+
+    for playlist in playlistsInfo:
+        if playlist_id == playlist['playlist_id']:
+            return playlist['name']
+
+    return None 
    
 
 def getPlaylistNameandId():

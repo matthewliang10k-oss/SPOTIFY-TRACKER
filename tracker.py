@@ -7,8 +7,7 @@ import database as db
 
 POLL_INTERVAL = 2
 
-# If progress jumps by more than this amount compared to our polling
-# interval, assume the user seeked rather than listened through that time.
+
 MAX_PROGRESS_JUMP = POLL_INTERVAL * 2.5 * 1000
 
 
@@ -58,18 +57,17 @@ class LiveTracker:
         self.spotify_user_id = user["spotify_user_id"]
         self.display_name = user["display_name"]
 
-        # Current session
+
         self.current_track = None
         self.current_track_id = None
         self.current_playlist_id = None
 
-        # When this listening session began
+ 
         self.session_start = None
 
-        # Spotify's previous progress_ms
+
         self.previous_progress = None
 
-        # Actual listening time accumulated
         self.milliseconds_played = 0
 
     def check_current_track(self):
@@ -82,11 +80,11 @@ class LiveTracker:
 
         playback = sa.getCurrentPlayback()
 
-        # Nothing is playing / Spotify returned no playback
+
         if playback is None:
             return
 
-        # No track information
+
         if playback.get("item") is None:
             return
 
@@ -96,9 +94,8 @@ class LiveTracker:
         progress = playback["progress_ms"]
         is_playing = playback["is_playing"]
 
-        # ----------------------------------------
-        # FIRST TRACK
-        # ----------------------------------------
+
+
 
         if self.current_track is None:
 
@@ -121,9 +118,6 @@ class LiveTracker:
 
             return
 
-        # ----------------------------------------
-        # NEW TRACK
-        # ----------------------------------------
 
         elif track_id != self.current_track_id:
 
@@ -149,7 +143,7 @@ class LiveTracker:
                 playlist_id=self.current_playlist_id
             )
 
-            # Start new session
+            # Start da new session
             self.current_track = track
             self.current_track_id = track_id
             self.current_playlist_id = get_playlist_id(playback)
@@ -169,9 +163,7 @@ class LiveTracker:
 
             return
 
-        # ----------------------------------------
-        # SAME TRACK
-        # ----------------------------------------
+
 
         else:
 
@@ -202,7 +194,7 @@ class LiveTracker:
                         f"{self.previous_progress} → {progress}"
                     )
 
-            # If paused, don't add listening time.
+
             else:
                 pass
 

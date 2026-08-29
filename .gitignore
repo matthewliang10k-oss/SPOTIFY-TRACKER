@@ -16,6 +16,7 @@ env
 
 # Project cache
 /.cache
+/.spotify_cache
 
 # OS files
 /.DS_Store

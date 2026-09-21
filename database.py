@@ -1,15 +1,20 @@
+import os
 import mysql.connector
-from datetime import datetime
+from dotenv import load_dotenv
+
+load_dotenv()
+
 
 def open_database():
     db = mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="REMOVED",
-        database="spotify_tracker"
+        host=os.getenv("MYSQL_HOST"),
+        user=os.getenv("MYSQL_USER"),
+        password=os.getenv("MYSQL_PASSWORD"),
+        database=os.getenv("MYSQL_DATABASE")
     )
 
     return db
+
 
 
 def save_user(user):

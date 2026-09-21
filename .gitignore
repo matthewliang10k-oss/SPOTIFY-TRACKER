@@ -8,7 +8,7 @@ env
 *.py[cod]
 *.pyo
 
-# VS Code settings (optional)
+# VS Code settings
 /.vscode
 
 # Environment variables
@@ -18,6 +18,13 @@ env
 /.cache
 /.spotify_cache
 
+# Project notes/context
+context prompt
+
+# Old standalone Streamlit app
+app.py
+
 # OS files
 /.DS_Store
 Thumbs.db
+
